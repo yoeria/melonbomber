@@ -164,7 +164,7 @@ function GM:EndRound(reason, winner)
 	self.MapVoting = true
 	self:NetworkMapList()
 
-	self.RoundSettings.NextRoundWait = 15
+	self.RoundSettings.NextRoundWait = 3
 	self:NetworkGameSettings()
 
 	for k, ply in pairs(self:GetPlayingPlayers()) do
