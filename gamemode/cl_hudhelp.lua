@@ -16,9 +16,9 @@ local function keyName(str)
 end
 
 function GM:DrawBindsHelp()
-	local shouldDraw = false 
+	local shouldDraw = false
 	if LocalPlayer():Alive() then
-		if self:GetGameState() == 1 || self:GetGameState() == 0 then
+		if self:GetGameState() == 1 or self:GetGameState() == 0 then
 			shouldDraw = true
 		end
 	end

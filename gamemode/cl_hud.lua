@@ -17,7 +17,7 @@ local function createRoboto(s)
 end
 
 for i = 5, 50 do
-	if i % 5 == 0 || i % 4 == 0 then
+	if i % 5 == 0 or i % 4 == 0 then
 		createRoboto(i)
 	end
 end
@@ -64,12 +64,12 @@ function GM:DrawGameHUD()
 	end
 
 	local ply = LocalPlayer()
-	if self:IsCSpectating() && IsValid(self:GetCSpectatee()) && self:GetCSpectatee():IsPlayer() then
+	if self:IsCSpectating() and IsValid(self:GetCSpectatee()) and self:GetCSpectatee():IsPlayer() then
 		ply = self:GetCSpectatee()
 	end
 	self:DrawHealth(ply)
 
-	if ply != LocalPlayer() then
+	if ply == not LocalPlayer() then
 		local col = ply:GetPlayerColor()
 		col = Color(col.r * 255, col.y * 255, col.z * 255)
 		draw.ShadowText(ply:Nick(), "RobotoHUD-30", ScrW() / 2, ScrH() - 4, col, 1, 4)
@@ -136,7 +136,7 @@ function GM:CreateHealthFace(ply)
 		local iSeq = self.HealthFace:LookupSequence( "walk_all" );
 	if ( iSeq <= 0 ) then iSeq = self.HealthFace:LookupSequence( "WalkUnarmed_all" ) end
 	if ( iSeq <= 0 ) then iSeq = self.HealthFace:LookupSequence( "walk_all_moderate" ) end
-	
+
 	-- if ( iSeq > 0 ) then self.HealthFace:ResetSequence( iSeq ) end
 
 	local f = function (self) return self.PlayerColor or Vector(1, 0, 0) end
@@ -179,14 +179,14 @@ function GM:DrawHealthFace(ply)
 	render.SetStencilPassOperation( STENCILOPERATION_REPLACE )
 	render.SetStencilReferenceValue( 1 )
 
-	if !IsValid(self.HealthFace) then
+	if not IsValid(self.HealthFace) then
 		self:CreateHealthFace(ply)
 	end
 
 	if IsValid(self.HealthFace) then
-		if self.HealthFace:GetModel() != ply:GetModel() then
+		if self.HealthFace:GetModel() == not ply:GetModel() then
 			self:CreateHealthFace(ply)
-		end	
+		end
 
 		self.HealthFace.PlayerColor = ply:GetPlayerColor()
 
@@ -199,16 +199,16 @@ function GM:DrawHealthFace(ply)
 
 		cam.Start3D( pos + Vector(19, 0, 2), Vector(-1,0,0):Angle(), 70, x, y, w, h, 5, 4096 )
 		cam.IgnoreZ( true )
-		
+
 		render.OverrideDepthEnable( false )
 		render.SuppressEngineLighting( true )
 		render.SetLightingOrigin(pos)
 		render.ResetModelLighting(1, 1, 1)
 		render.SetColorModulation(1, 1, 1)
 		render.SetBlend(1)
-		
+
 		self.HealthFace:DrawModel()
-		
+
 		render.SuppressEngineLighting( false )
 		cam.IgnoreZ( false )
 		cam.End3D()
@@ -216,14 +216,14 @@ function GM:DrawHealthFace(ply)
 	end
 
 	render.SetStencilEnable( false )
- 
+
 	render.SetStencilWriteMask( 0 );
 		render.SetStencilReferenceValue( 0 );
 		render.SetStencilTestMask( 0 );
 		render.SetStencilEnable( false )
 		render.OverrideDepthEnable( false )
 		render.SetBlend( 1 )
-		
+
 		cam.IgnoreZ( false )
 end
 
@@ -251,14 +251,14 @@ function GM:DrawUpgrades()
 	local f20 = draw.GetFontHeight("RobotoHUD-20")
 	local i = 0
 	for k, pickup in pairs(GAMEMODE.Pickups) do
-		if !pickup.NoList && self:HasUpgrade(k) then
+		if not pickup.NoList and self:HasUpgrade(k) then
 			local x, y = ScrW() - 4, ScrH() - 4 - f20 * i
 			draw.ShadowText(pickup.name, "RobotoHUD-20", x, y, pickup.color or color_white, 2, 4)
 			i = i + 1
 		end
 	end
 
-	if self.UpgradePopup && self.Pickups[self.UpgradePopup.id] then
+	if self.UpgradePopup and self.Pickups[self.UpgradePopup.id] then
 		if self.UpgradePopup.time + 3 < CurTime() then
 			self.UpgradePopup = nil
 		else
@@ -294,7 +294,7 @@ function GM:DrawRoundTimer()
 		end
 	elseif self:GetGameState() == 2 then
 		if self:GetStateRunningTime() < 2 then
-			draw.ShadowText("GO!", "RobotoHUD-50", ScrW() / 2, ScrH() / 3, color_white, 1, 1)
+			draw.ShadowText("GOnot ", "RobotoHUD-50", ScrW() / 2, ScrH() / 3, color_white, 1, 1)
 		end
 	end
 end

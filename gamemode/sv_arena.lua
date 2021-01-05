@@ -14,8 +14,8 @@ function GM:GetGridPosFromEntZone(zone, ent)
 	mins = mins + ent:OBBMins()
 	maxs = maxs + ent:OBBMaxs()
 	local pos = ent:GetPos()
-	if pos.x > mins.x && pos.x < maxs.x then
-		if pos.y > mins.y && pos.y < maxs.y then
+	if pos.x > mins.x and pos.x < maxs.x then
+		if pos.y > mins.y and pos.y < maxs.y then
 			local center = (zone:OBBMins() + zone:OBBMaxs()) / 2
 			local t = pos - center
 			return math.Round(t.x / zone.grid.sqsize), math.Round(t.y / zone.grid.sqsize)
@@ -25,14 +25,14 @@ end
 
 function GM:IsGridPosClear(zone, x, y, ignorePlayers)
 	local sq = zone.grid:getSquare(x, y)
-	if IsValid(sq) && sq.gridSolid then return false end
+	if IsValid(sq) and sq.gridSolid then return false end
 
 	if ignorePlayers then return true end
 
 	local center = (zone:OBBMins() + zone:OBBMaxs()) / 2
 	local t = Vector(x * zone.grid.sqsize, y * zone.grid.sqsize) + center
 	t.z = zone:OBBMins().z
-	
+
 	local s = zone.grid.sqsize / 2 - 1
 	for k, ent in pairs(player.GetAll()) do
 		if ent:Alive() then
@@ -40,8 +40,8 @@ function GM:IsGridPosClear(zone, x, y, ignorePlayers)
 			mins = mins - ent:OBBMaxs()
 			maxs = maxs - ent:OBBMins()
 			local pos = ent:GetPos()
-			if pos.x > mins.x && pos.x < maxs.x then
-				if pos.y > mins.y && pos.y < maxs.y then
+			if pos.x > mins.x and pos.x < maxs.x then
+				if pos.y > mins.y and pos.y < maxs.y then
 					return false
 				end
 			end
@@ -57,7 +57,7 @@ function GM:GetPlayersInGridPos(zone, x, y)
 	local center = (zone:OBBMins() + zone:OBBMaxs()) / 2
 	local t = Vector(x * zone.grid.sqsize, y * zone.grid.sqsize) + center
 	t.z = zone:OBBMins().z
-	
+
 	local s = zone.grid.sqsize / 2 - 1
 	for k, ent in pairs(player.GetAll()) do
 		if ent:Alive() then
@@ -65,8 +65,8 @@ function GM:GetPlayersInGridPos(zone, x, y)
 			mins = mins - ent:OBBMaxs()
 			maxs = maxs - ent:OBBMins()
 			local pos = ent:GetPos()
-			if pos.x > mins.x && pos.x < maxs.x then
-				if pos.y > mins.y && pos.y < maxs.y then
+			if pos.x > mins.x and pos.x < maxs.x then
+				if pos.y > mins.y and pos.y < maxs.y then
 					table.insert(tab, ent)
 				end
 			end
@@ -77,7 +77,7 @@ function GM:GetPlayersInGridPos(zone, x, y)
 end
 
 function GM:CreateExplosion(zone, x, y, length, bomb, combiner)
-	if bomb.GetPowerBomb && bomb:GetPowerBomb() then
+	if bomb.GetPowerBomb and bomb:GetPowerBomb() then
 		sound.Play("npc/scanner/cbot_energyexplosion1.wav", bomb:GetPos(), 100, math.Rand(80, 120))
 		sound.Play("BaseExplosionEffect.Sound", bomb:GetPos(), 100, math.Rand(80, 120))
 	else
@@ -91,11 +91,11 @@ function GM:CreateExplosion(zone, x, y, length, bomb, combiner)
 	local function boom(i, nx, ny)
 		local sq = zone.grid:getSquare(nx, ny)
 		if IsValid(sq) then
-			if sq.gridType != "wall" then
+			if sq.gridType == not "wall" then
 				self:CombineExplosion(zone, nx, ny, bomb, combo)
 			end
-			if sq:GetClass() == "mb_melon" || sq:GetClass() == "mb_pickup" || (sq.gridBreakable && bomb.GetPierce && bomb:GetPierce()) then
-				// keep going if we have pierce and it was a box
+			if sq:GetClass() == "mb_melon" or sq:GetClass() == "mb_pickup" or (sq.gridBreakable and bomb.GetPierce and bomb:GetPierce()) then
+				-- keep going if we have pierce and it was a box
 			else
 				return true
 			end
@@ -104,27 +104,27 @@ function GM:CreateExplosion(zone, x, y, length, bomb, combiner)
 		end
 		return false
 	end
-	// x+
+	-- x+
 	for i = 1, length do
 		if boom(i, x + i, y) then break end
 	end
 
-	// x-
+	-- x-
 	for i = 1, length do
 		if boom(i, x - i, y) then break end
 	end
 
-	// y+
+	-- y+
 	for i = 1, length do
 		if boom(i, x, y + i) then break end
 	end
 
-	// y-
+	-- y-
 	for i = 1, length do
 		if boom(i, x, y - i) then break end
 	end
 
-	if !combiner then
+	if not combiner then
 		self:FinishExplosion(zone, combo, bomb:GetBombOwner())
 	end
 end
@@ -149,7 +149,7 @@ function GM:CombineExplosion(zone, x, y, bomb, combiner)
 		if ent:GetClass() == "mb_melon" then
 			ent:Explode(zone, combiner)
 		elseif ent.gridExplosive then
-			if !ent.HasExploded then
+			if not ent.HasExploded then
 				ent.HasExploded = true
 				self:CreateExplosion(zone, x, y, 5, ent, combiner)
 			end
@@ -164,7 +164,7 @@ function GM:SpecificExplosion(zone, x, y, bomb, attacker)
 	t.z = zone:OBBMins().z
 
 	local mag = 1
-	if bomb.GetPowerBomb && bomb:GetPowerBomb() then
+	if bomb.GetPowerBomb and bomb:GetPowerBomb() then
 		mag = 2
 	end
 	-- timer.Simple(0, function ()
@@ -183,7 +183,7 @@ function GM:SpecificExplosion(zone, x, y, bomb, attacker)
 	local ent = zone.grid:getSquare(x, y)
 	if IsValid(ent) then
 		if ent.gridBreakable then
-			if !(bomb.GetPowerBomb && bomb:GetPowerBomb()) && ent.gridStrength > 1 then
+			if not (bomb.GetPowerBomb and bomb:GetPowerBomb()) and ent.gridStrength > 1 then
 				self:GibCrate(ent)
 				ent.gridStrength = ent.gridStrength - 1
 				local b = ent.gridStrength / ent.gridMaxStrength * 150 + (255 - 150)
@@ -204,8 +204,8 @@ function GM:SpecificExplosion(zone, x, y, bomb, attacker)
 		mins = mins - ent:OBBMaxs()
 		maxs = maxs - ent:OBBMins()
 		local pos = ent:GetPos()
-		if pos.x > mins.x && pos.x < maxs.x then
-			if pos.y > mins.y && pos.y < maxs.y then
+		if pos.x > mins.x and pos.x < maxs.x then
+			if pos.y > mins.y and pos.y < maxs.y then
 				if ent:Alive() then
 					local dmg = DamageInfo()
 					if IsValid(bomb) then
@@ -227,9 +227,9 @@ function GM:SpecificExplosion(zone, x, y, bomb, attacker)
 					dmg:SetDamage(400)
 					-- dmg:SetDamageType(DMG_BLAST)
 
-					// ulx likes to break stuff, thank you ulx
+					-- ulx likes to break stuff, thank you ulx
 					local b, err = pcall(ent.TakeDamageInfo, ent, dmg)
-					if !b then
+					if not b then
 						print(err)
 					end
 				end
@@ -277,7 +277,7 @@ function GM:GibCrate(ent)
 	local maxGibs = 3
 	if ent.gridExplosive then
 		maxGibs = 5
-	elseif ent.gridStrength && ent.gridStrength > 1 then
+	elseif ent.gridStrength and ent.gridStrength > 1 then
 		maxGibs = 2
 	end
 	for i = 1, math.random(1, maxGibs) do
@@ -302,8 +302,8 @@ function GM:GibCrate(ent)
 		end
 	end
 
-	if ent.gridMaxStrength && ent.gridMaxStrength > 1 then
-	
+	if ent.gridMaxStrength and ent.gridMaxStrength > 1 then
+
 	else
 		ent:EmitSound(table.Random(woodBreak))
 	end
@@ -345,9 +345,9 @@ function GM:CreatePowerup(typ, zone, x, y)
 end
 
 function GM:PlayerPlaceBomb(ply)
-	if !(self:GetGameState() == 2 || self:GetGameState() == 0) then return end
-	if ply.BombLast && ply.BombLast + 0.05 > CurTime() then return end
-	if ply.LastSpawnTime && ply.LastSpawnTime + 1 > CurTime() then return end
+	if not (self:GetGameState() == 2 or self:GetGameState() == 0) then return end
+	if ply.BombLast and ply.BombLast + 0.05 > CurTime() then return end
+	if ply.LastSpawnTime and ply.LastSpawnTime + 1 > CurTime() then return end
 	ply.BombLast = CurTime()
 
 	local count = 0
@@ -379,7 +379,7 @@ function GM:CreateBomb(zone, x, y, owner, count, nopowerbomb)
 	ent:SetBombOwner(owner)
 	ent:SetAngles(Angle(0, 0, 0))
 	ent:SetExplosionLength(owner:GetBombPower())
-	if owner:HasUpgrade(5) && count == 0 && !nopowerbomb then
+	if owner:HasUpgrade(5) and count == 0 and not nopowerbomb then
 		ent:SetPowerBomb(true)
 	else
 		if owner:HasUpgrade(4) then
@@ -408,9 +408,9 @@ function GM:CreateBomb(zone, x, y, owner, count, nopowerbomb)
 end
 
 function GM:PlayerAltFire(ply)
-	if !(self:GetGameState() == 2 || self:GetGameState() == 0) then return end
-	if ply.BombLast && ply.BombLast + 0.05 > CurTime() then return end
-	if ply.LastSpawnTime && ply.LastSpawnTime + 1 > CurTime() then return end
+	if not (self:GetGameState() == 2 or self:GetGameState() == 0) then return end
+	if ply.BombLast and ply.BombLast + 0.05 > CurTime() then return end
+	if ply.LastSpawnTime and ply.LastSpawnTime + 1 > CurTime() then return end
 	ply.BombLast = CurTime()
 
 	local count = 0
@@ -420,20 +420,20 @@ function GM:PlayerAltFire(ply)
 		end
 	end
 
-	if count > 0 && ply:HasUpgrade(7) then
+	if count > 0 and ply:HasUpgrade(7) then
 
-		// first first created bomb
+		-- first first created bomb
 		local firstBomb
 		for k, ent in pairs(ents.FindByClass("mb_melon")) do
 			if ent:GetBombOwner() == ply then
-				if !firstBomb || ent:GetCreateTime() < firstBomb:GetCreateTime() then
+				if not firstBomb or ent:GetCreateTime() < firstBomb:GetCreateTime() then
 					firstBomb = ent
 				end
 			end
 		end
 
-		// explode the first bomb
-		if firstBomb && firstBomb:GetCreateTime() + 1 < CurTime() then
+		-- explode the first bomb
+		if firstBomb and firstBomb:GetCreateTime() + 1 < CurTime() then
 			firstBomb:Explode(zone, combo)
 		end
 	elseif ply:HasUpgrade(6) then
@@ -449,21 +449,21 @@ function GM:PlayerAltFire(ply)
 			elseif ply.LastMoveKeyDown == IN_MOVERIGHT then
 				dir = Vector(1, 0, 0)
 			end
-			
+
 			self:PlaceLineBomb(ply, zone, x, y, dir)
 		end
 	end
 end
 
 function GM:PlaceLineBomb(ply, zone, x, y, dir)
-	
+
 
 	ply:EmitSound("npc/scanner/scanner_nearmiss" .. math.random(1,2) .. ".wav")
 
 	local placed = 0
 
 	local function nextbomb()
-		if !IsValid(ply) then 
+		if not IsValid(ply) then
 			return
 		end
 
@@ -492,17 +492,17 @@ function GM:PlaceLineBomb(ply, zone, x, y, dir)
 			local t = Vector(sx * zone.grid.sqsize, sy * zone.grid.sqsize) + center
 			t.z = zone:OBBMins().z
 
-			// don't place through players
+			-- don't place through players
 			for k, ent in pairs(player.GetAll()) do
-				if ent != ply && ent:Alive() then
+				if ent == not ply and ent:Alive() then
 					local s = zone.grid.sqsize / 2 - 1
 					local mins, maxs = t + Vector(-s, -s, 0), t + Vector(s, s, 32)
 					mins = mins - ent:OBBMaxs()
 					maxs = maxs - ent:OBBMins()
 					local pos = ent:GetPos()
-					if pos.x > mins.x && pos.x < maxs.x then
-						if pos.y > mins.y && pos.y < maxs.y then
-							shouldbreak = true
+					if pos.x > mins.x and pos.x < maxs.x then
+						if pos.y > mins.y and pos.y < maxs.y then
+							ShouldBreak = true
 							return
 						end
 					end
@@ -530,8 +530,8 @@ function GM:ArenaFindPlayerSpawn(ply)
 			table.insert(has, ent)
 		end
 	end
-	if #has <= 0 then 
-		return 
+	if #has <= 0 then
+		return
 	end
 
 	local zone = has[math.random(#has)]
@@ -564,8 +564,8 @@ function GM:ClearBoxesAroundSquare(zone, x, y, len)
 		mins = mins - ent:OBBMaxs()
 		maxs = maxs - ent:OBBMins()
 		local pos = ent:GetPos()
-		if pos.x > mins.x && pos.x < maxs.x then
-			if pos.y > mins.y && pos.y < maxs.y then
+		if pos.x > mins.x and pos.x < maxs.x then
+			if pos.y > mins.y and pos.y < maxs.y then
 				if ent.gridBreakable then
 					ent:Remove()
 				end
@@ -601,48 +601,48 @@ end
 
 function GM:LineBombThink()
 	for k, ply in pairs(player.GetAll()) do
-		lastkey = nil
+		LastKey = nil
 		if ply:KeyDown(IN_FORWARD) then
-			lastkey = IN_FORWARD
+			LastKey = IN_FORWARD
 		end
 		if ply:KeyDown(IN_BACK) then
-			if lastkey then
-				lastkey = nil
+			if LastKey then
+				LastKey = nil
 			else
-				lastkey = IN_BACK
+				LastKey = IN_BACK
 			end
 		end
 		if ply:KeyDown(IN_MOVELEFT) then
-			if lastkey then
-				lastkey = nil
+			if LastKey then
+				LastKey = nil
 			else
-				lastkey = IN_MOVELEFT
+				LastKey = IN_MOVELEFT
 			end
 		end
 		if ply:KeyDown(IN_MOVERIGHT) then
-			if lastkey then
-				lastkey = nil
+			if LastKey then
+				LastKey = nil
 			else
-				lastkey = IN_MOVERIGHT
+				LastKey = IN_MOVERIGHT
 			end
 		end
-		if lastkey != nil then
-			ply.LastMoveKeyDown = lastkey
+		if LastKey == not nil then
+			ply.LastMoveKeyDown = LastKey
 		end
 	end
 end
 
 function GM:ArenaDeathBlockThink()
 	if self:GetGameState() == 2 then
-		if !self.DeathBlocksStarted then
+		if not self.DeathBlocksStarted then
 			if self:GetStateRunningTime() > self.DeathBlocksTime:GetFloat() then
 				self.DeathBlocksStarted = true
 				local ct = ChatText()
-				ct:Add("Death blocks have started, get to the center!", Color(170, 10, 10))
+				ct:Add("Death blocks have started, get to the centernot ", Color(170, 10, 10))
 				ct:SendAll()
 			end
 		else
-			if !self.DBTime || self.DBTime < CurTime() then
+			if not self.DBTime or self.DBTime < CurTime() then
 				self.DBTime = CurTime() + 0.2
 				self:ArenaNextDeathBlock(ents.FindByClass("spawn_zone")[1])
 			end
@@ -651,12 +651,12 @@ function GM:ArenaDeathBlockThink()
 end
 
 function GM:ArenaNextDeathBlock(zone)
-	if !zone.NextDeathBlock then zone.NextDeathBlock = 0 end
-	if !zone.DeathBlockStage then zone.DeathBlockStage = 0 end
+	if not zone.NextDeathBlock then zone.NextDeathBlock = 0 end
+	if not zone.DeathBlockStage then zone.DeathBlockStage = 0 end
 
 	local dy = 0
 	local jx = 0
-	if zone.DeathBlockStage % 2 == 0 && zone.grid.sizeUp > 0 then
+	if zone.DeathBlockStage % 2 == 0 and zone.grid.sizeUp > 0 then
 		dy = -zone.grid.sizeUp
 		jx = -1
 	elseif zone.grid.sizeDown > 0 then
@@ -698,7 +698,7 @@ function GM:ArenaNextDeathBlock(zone)
 		ent:Remove()
 	end
 
-	if jx != 0 then
+	if jx == not 0 then
 		local x, y = -zone.grid.sizeLeft + zone.NextDeathBlock - 1, dy + jx
 		local ent = zone.grid:getSquare(x, y)
 		if IsValid(ent) then

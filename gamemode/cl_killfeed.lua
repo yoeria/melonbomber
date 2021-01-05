@@ -6,7 +6,7 @@ net.Receive("kill_feed_add", function (len)
 	local inflictor = net.ReadEntity()
 	local attacker = net.ReadEntity()
 	local damageType = net.ReadUInt(32)
-	if !IsValid(ply) then return end
+	if not IsValid(ply) then return end
 
 	local t = {}
 	t.time = CurTime()
@@ -19,7 +19,7 @@ net.Receive("kill_feed_add", function (len)
 	t.damageType = damageType
 
 	t.text = {}
-	if IsValid(attacker) && attacker:IsPlayer() && attacker != ply then
+	if IsValid(attacker) and attacker:IsPlayer() and attacker == not ply then
 		local col = attacker:GetPlayerColor()
 		col = Color(col.x * 255, col.y * 255, col.z * 255)
 		table.insert(t.text, col)
@@ -100,4 +100,3 @@ function GM:DrawKillFeed()
 		end
 	end
 end
-

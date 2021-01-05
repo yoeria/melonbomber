@@ -3,7 +3,7 @@ include("sv_mapvote.lua")
 
 MapTypes = {}
 
-// inherit from _G
+-- inherit from _G
 local meta = {}
 meta.__index = _G
 meta.__newindex = _G
@@ -20,7 +20,7 @@ function SGrid:initialize(minx, miny, maxx, maxy)
 end
 
 function SGrid:getEmpty(x, y)
-	return self.grid[x .. ":" .. y] != nil
+	return self.grid[x .. ":" .. y] == not nil
 end
 
 function SGrid:setEmpty(x, y)
@@ -89,14 +89,13 @@ local function loadMaps(rootFolder)
 
 		local name = v:sub(1, -5)
 		local f = CompileFile(rootFolder .. v)
-		if !f then
+		if not f then
 			MsgC(Color(255, 50, 10), "Loading map failed " .. name .. " from " .. rootFolder .. "\n")
-			continue
 		end
 		setfenv(f, tempG)
 		local b, err = pcall(f)
 
-		if !b then
+		if not b then
 			MsgC(Color(255, 50, 10), "Loading map failed " .. name .. " from " .. rootFolder .. "\nError: " .. err .. "\n")
 		else
 			MsgC(Color(50, 255, 50), "Loaded map " .. name .. " from " .. rootFolder .. "\n")

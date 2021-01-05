@@ -13,7 +13,7 @@ function IncludeCompile(file, g)
 	AddCSLuaFile(rootFolder .. "sh_config.lua")
 
 	local f = CompileFile(rootFolder .. "sh_config.lua")
-	if !f then
+	if not f then
 		print("File doesn't exists " .. rootFolder .. "sh_config.lua")
 		return
 	end

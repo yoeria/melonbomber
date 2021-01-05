@@ -1,4 +1,4 @@
-if GAMEMODE && IsValid(GAMEMODE.ScoreboardPanel) then
+if GAMEMODE and IsValid(GAMEMODE.ScoreboardPanel) then
 	GAMEMODE.ScoreboardPanel:Remove()
 end
 
@@ -28,10 +28,10 @@ local function addPlayerItem(self, mlist, ply)
 		surface.SetDrawColor(color_black)
 		-- surface.DrawOutlinedRect(0, 0, w, h)
 
-		if IsValid(ply) && ply:IsPlayer() then
+		if IsValid(ply) and ply:IsPlayer() then
 			local s = 8
 
-			if !ply:Alive() then
+			if not ply:Alive() then
 				surface.SetMaterial(skull)
 				surface.SetDrawColor(220, 220, 220, 255)
 				surface.DrawTexturedRect(s, h / 2 - 16, 32, 32)
@@ -41,11 +41,11 @@ local function addPlayerItem(self, mlist, ply)
 			if ply:IsMuted() then
 				surface.SetMaterial(muted)
 
-				// draw shadow
+				-- draw shadow
 				-- surface.SetDrawColor(color_black)
 				-- surface.DrawTexturedRect(s + 1, h / 2 - 16 + 1, 32, 32)
 
-				// draw mute icon
+				-- draw mute icon
 				surface.SetDrawColor(150, 150, 150, 255)
 				surface.DrawTexturedRect(s, h / 2 - 16, 32, 32)
 				s = s + 32 + 4
@@ -82,19 +82,19 @@ local function doPlayerItems(self, mlist)
 			end
 		end
 
-		if !found then
+		if not found then
 			addPlayerItem(self, mlist, ply)
 		end
 	end
 	local del = false
 
 	for t,v in pairs(mlist:GetCanvas():GetChildren()) do
-		if !v.perm && v.ctime != CurTime() then
+		if not v.perm and v.ctime == not CurTime() then
 			v:Remove()
 			del = true
 		end
 	end
-	// make sure the rest of the elements are moved up
+	-- make sure the rest of the elements are moved up
 	if del then
 		timer.Simple(0, function() mlist:GetCanvas():InvalidateLayout() end)
 	end
@@ -113,7 +113,7 @@ local function makeTeamList(parent)
 	end
 
 	function pnl:Think()
-		if !self.RefreshWait || self.RefreshWait < CurTime() then
+		if not self.RefreshWait or self.RefreshWait < CurTime() then
 			self.RefreshWait = CurTime() + 0.1
 			doPlayerItems(self, mlist)
 
@@ -124,17 +124,17 @@ local function makeTeamList(parent)
 	-- headp:DockMargin(0,0,0,4)
 	-- headp:Dock(TOP)
 	-- headp:SetTall(draw.GetFontHeight("RobotoHUD-25"))
-	-- function headp:Paint() 
+	-- function headp:Paint()
 	-- 	draw.ShadowText(team.GetName(pteam), "RobotoHUD-25", 0, 0, team.GetColor(pteam), 0)
 	-- end
 
 	mlist = vgui.Create("DScrollPanel", pnl)
 	mlist:Dock(FILL)
 	function mlist:Paint(w, h)
-		
+
 	end
 
-	// child positioning
+	-- child positioning
 	local canvas = mlist:GetCanvas()
 	canvas:DockPadding(0, 0, 0, 0)
 	function canvas:OnChildAdded( child )
@@ -199,7 +199,7 @@ function GM:ScoreboardShow()
 		menu.Credits = vgui.Create("DPanel", menu)
 		menu.Credits:Dock(TOP)
 		menu.Credits:DockMargin(0, 0, 0, 4)
-		function menu.Credits:Paint(w, h) 
+		function menu.Credits:Paint(w, h)
 			surface.SetFont("RobotoHUD-25")
 			local t = GAMEMODE.Name or ""
 			local tw,th = surface.GetTextSize(t)
@@ -288,7 +288,7 @@ function GM:DoScoreboardActionPopup(ply)
 		admin:SetIcon("icon16/shield.png")
 	end
 
-	if ply != LocalPlayer() then
+	if ply == not LocalPlayer() then
 		local t = "Mute"
 		if ply:IsMuted() then
 			t = "Unmute"
@@ -297,12 +297,12 @@ function GM:DoScoreboardActionPopup(ply)
 		mute:SetIcon("icon16/sound_mute.png")
 		function mute:DoClick()
 			if IsValid(ply) then
-				ply:SetMuted(!ply:IsMuted())
+				ply:SetMuted(not ply:IsMuted())
 			end
 		end
 	end
-	
-	if IsValid(LocalPlayer()) && LocalPlayer():IsAdmin() then
+
+	if IsValid(LocalPlayer()) and LocalPlayer():IsAdmin() then
 		actions:AddSpacer()
 
 		if ply:Team() == 2 then

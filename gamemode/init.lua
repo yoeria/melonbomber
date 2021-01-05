@@ -2,10 +2,10 @@ AddCSLuaFile("shared.lua")
 
 local rootFolder = (GM or GAMEMODE).Folder:sub(11) .. "/gamemode/"
 
-// add cs lua all the cl_ or sh_ files
+-- add cs lua all the cl_ or sh_ files
 local files, dirs = file.Find(rootFolder .. "*", "LUA")
 for k, v in pairs(files) do
-	if v:sub(1,3) == "cl_" || v:sub(1,3) == "sh_" then
+	if v:sub(1,3) == "cl_" or v:sub(1,3) == "sh_" then
 		AddCSLuaFile(rootFolder .. v)
 	end
 end
@@ -48,19 +48,19 @@ GM.MapMaxArea = CreateConVar("mb_map_maxarea", 500, bit.bor(FCVAR_NOTIFY), "Max 
 GM.DeathBlocksTime = CreateConVar("mb_deathblocks_time", 2 * 60, bit.bor(FCVAR_NOTIFY), "Amount of time before death blocks start decreasing the map size" )
 GM.StartWaitTime = CreateConVar("ph_mapstartwait", 30, bit.bor(FCVAR_NOTIFY), "Number of seconds to wait for players on map start before starting round" )
 
-function GM:Initialize() 
+function GM:Initialize()
 	self.RoundWaitForPlayers = CurTime()
-	
+
 	self.DeathRagdolls = {}
 	self:SetupStatisticsTables()
 end
 
-function GM:InitPostEntity() 
+function GM:InitPostEntity()
 	self:InitPostEntityAndMapCleanup()
 end
 
 util.AddNetworkString("spawn_zones")
-function GM:InitPostEntityAndMapCleanup() 
+function GM:InitPostEntityAndMapCleanup()
 	for k, ent in pairs(ents.GetAll()) do
 		if ent:GetClass():find("door") then
 			ent:Fire("unlock","",0)
@@ -121,7 +121,7 @@ end
 
 function GM:PlayerNoClip( ply )
 	timer.Simple(0, function () ply:CalculateSpeed() end)
-	return ply:IsSuperAdmin() || ply:GetMoveType() == MOVETYPE_NOCLIP
+	return ply:IsSuperAdmin() or ply:GetMoveType() == MOVETYPE_NOCLIP
 end
 
 function GM:OnEndRound()
@@ -129,7 +129,7 @@ function GM:OnEndRound()
 end
 
 function GM:OnStartRound()
-	
+
 end
 
 function GM:EntityTakeDamage( ent, dmginfo )
@@ -146,16 +146,16 @@ end
 function GM:OnReloaded()
 	for k, ent in pairs(ents.FindByClass("spawn_zone")) do
 		if ent.grid then
-			setClass(ent.grid, ClassGrid)
+			SetClass(ent.grid, ClassGrid)
 		end
 	end
 end
 
 function GM:CleanupMap()
 	-- for k, ply in pairs(player.GetAll()) do
-	-- 	if IsValid(ply:GetCSpectatee()) && ply:GetCSpectatee():GetClass() == "prop_ragdoll" then
+	-- 	if IsValid(ply:GetCSpectatee()) and ply:GetCSpectatee():GetClass() == "prop_ragdoll" then
 	-- 		ply:UnCSpectate()
-	-- 	end 
+	-- 	end
 	-- end
 	-- for k, ent in pairs(ents.FindByClass("prop_ragdoll")) do
 	-- 	ent:Remove()

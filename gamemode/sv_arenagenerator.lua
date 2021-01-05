@@ -22,11 +22,11 @@ function Gen:spawnProp(pos, ang, mdl, opts)
 	ent:Spawn()
 	local phys = ent:GetPhysicsObject()
 	if IsValid(phys) then
-		if !opts || !opts.nofreeze then
+		if not opts or not opts.nofreeze then
 			phys:EnableMotion(false)
 		end
 	end
-	if !opts || !opts.nomotion then
+	if not opts or not opts.nomotion then
 		-- ent:SetMoveType(MOVETYPE_NONE)
 	end
 	local skins = ent:SkinCount()
@@ -34,10 +34,10 @@ function Gen:spawnProp(pos, ang, mdl, opts)
 	return ent
 end
 
-// 0 is neg y
-// 1 is pos x
-// 2 is pos y
-// 3 is neg x
+-- 0 is neg y
+-- 1 is pos x
+-- 2 is pos y
+-- 3 is neg x
 
 function Gen:createBox(x, y, strength, explosive)
 	local angles = Angle(0, 0, 0)
@@ -50,7 +50,7 @@ function Gen:createBox(x, y, strength, explosive)
 	local ent = self:spawnProp(pos, angles, "models/hunter/blocks/cube075x075x075.mdl")
 	if explosive then
 		ent:SetMaterial("models/props_c17/canister02a")
-	elseif strength && strength > 1 then
+	elseif strength and strength > 1 then
 		ent:SetMaterial("models/props_c17/metalladder002")
 	else
 		ent:SetMaterial("models/props/CS_militia/roofbeams03")
@@ -118,7 +118,7 @@ function Gen:generate()
 		GAMEMODE.MapVoting = false
 		local votes = {}
 		for ply, map in pairs(GAMEMODE.MapVotes) do
-			if IsValid(ply) && ply:IsPlayer() then
+			if IsValid(ply) and ply:IsPlayer() then
 				votes[map] = (votes[map] or 0) + 1
 			end
 		end
@@ -148,7 +148,7 @@ function Gen:generate()
 	local grid = MapMakerGrid(minx, miny, minx + self.width, miny + self.height)
 	maptype:generateMap(grid)
 
-	// generate map
+	-- generate map
 	for x = grid.minx, grid.maxx do
 		for y = grid.miny, grid.maxy do
 			if grid:isWall(x, y) then
@@ -163,8 +163,8 @@ function Gen:generate()
 		end
 	end
 
-	// generate walls around map
-	for i = -self.grid.sizeLeft - 1, self.grid.sizeRight + 1 do 
+	-- generate walls around map
+	for i = -self.grid.sizeLeft - 1, self.grid.sizeRight + 1 do
 		self:createWall(i, -self.grid.sizeUp - 1, 2)
 		self:createWall(i, self.grid.sizeDown + 1, 2)
 	end
@@ -176,5 +176,5 @@ function Gen:generate()
 
 end
 
-// capture point
-// models/props_combine/combinecrane002.mdl
+-- capture point
+-- models/props_combine/combinecrane002.mdl

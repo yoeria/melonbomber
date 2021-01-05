@@ -3,9 +3,9 @@
 function GM:BotMove(ply, cmd)
 	local zone, x, y = self:GetGridPosFromEnt(ply)
 	if zone then
-		if !ply.BotTarget then
+		if not ply.BotTarget then
 			local add = ply.BotLastAdd
-			if !add || math.random(0, 5) == 0 then
+			if not add or math.random(0, 5) == 0 then
 				local yaw = Angle(0, math.random(0, 3) * 90, 0)
 				add = yaw:Forward()
 				add.x = math.Round(add.x)
@@ -27,7 +27,7 @@ function GM:BotMove(ply, cmd)
 
 			local look = t - ply:GetPos()
 			look.z = 0
-			if x == tx && y == ty && look:Length() < zone.grid.sqsize * 0.4 then
+			if x == tx and y == ty and look:Length() < zone.grid.sqsize * 0.4 then
 				ply.BotTarget = nil
 			else
 				if look:Length() > zone.grid.sqsize then

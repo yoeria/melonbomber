@@ -21,17 +21,17 @@ end
 
 function ENT:SpawnFunction( ply, tr, ClassName )
 
-	if ( !tr.Hit ) then return end
-	
+	if ( not tr.Hit ) then return end
+
 	local SpawnPos = tr.HitPos + tr.HitNormal * 10
-	
+
 	local ent = ents.Create( ClassName )
 	ent:SetPos( SpawnPos )
 	ent:Spawn()
 	ent:Activate()
-	
+
 	return ent
-	
+
 end
 
 
@@ -44,12 +44,12 @@ function ENT:Initialize()
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetMoveType( MOVETYPE_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
-		
+
 		local phys = self:GetPhysicsObject()
 		if IsValid(phys) then
 			phys:Wake()
 		end
-		
+
 		self:SetHealth(1)
 		self:SetUseType( SIMPLE_USE )
 		self:SetTrigger(true)
@@ -57,18 +57,18 @@ function ENT:Initialize()
 
 		self:SetCollisionGroup(COLLISION_GROUP_WORLD)
 		self:DrawShadow(false)
-	else 
-		
+	else
+
 		self.DecorParts = {}
 	end
 
 	self.CreateTime = CurTime()
 	self.ExplodeTime = CurTime() + 3
-	
+
 end
 
 function ENT:SetPickupType(int)
-	if GAMEMODE.Pickups && GAMEMODE.Pickups[int] then
+	if GAMEMODE.Pickups and GAMEMODE.Pickups[int] then
 		self.PickupType = int
 		self:SetNWInt("pickupType", int)
 	else
@@ -105,11 +105,11 @@ if ( CLIENT ) then
 				local col = table.Copy(pickup.color)
 				col.a = 180
 				render.DrawQuadEasy(self:GetPos() + Vector(0, 0, mins.z + 1.3), Vector(0, 0, 1), 32, 32, col, 0)
-				
+
 				if pickup.DrawDecor then
 					pickup:DrawDecor(self)
 				else
-					if !IsValid(self.Melon) then
+					if not IsValid(self.Melon) then
 						self.Melon = ClientsideModel(pickup.model or "models/props_junk/watermelon01.mdl")
 						self.Melon:SetNoDraw(true)
 						self.Melon:SetAngles(Angle(0, math.Rand(0, 360), 0))
@@ -165,11 +165,11 @@ function ENT:Use( ply, caller )
 end
 
 function ENT:StartTouch(ent)
-	if IsValid(ent) && ent:IsPlayer() then
+	if IsValid(ent) and ent:IsPlayer() then
 		local pickup = GAMEMODE.Pickups[self:GetPickupType()]
 		if pickup then
 			if pickup.CanPickup then
-				if !pickup:CanPickup(ent) then
+				if not pickup:CanPickup(ent) then
 					return
 				end
 			end

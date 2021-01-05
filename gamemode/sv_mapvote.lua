@@ -44,7 +44,7 @@ concommand.Add("mb_votemap", function (ply, com, args)
 				break
 			end
 		end
-		if !found then
+		if not(found) then
 			ply:ChatPrint("Invalid map " .. args[1])
 			return
 		end

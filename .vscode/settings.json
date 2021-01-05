@@ -1,0 +1,12 @@
+{
+    "Lua.diagnostics.globals": [
+        "net",
+        "g_VoicePanelList",
+        "class"
+    ],
+    "Lua.diagnostics.disable": [
+        "undefined-global",
+        "undefined-field",
+        "count-down-loop"
+    ]
+}

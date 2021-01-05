@@ -21,17 +21,17 @@ end
 
 function ENT:SpawnFunction( ply, tr, ClassName )
 
-	if ( !tr.Hit ) then return end
-	
+	if ( not tr.Hit ) then return end
+
 	local SpawnPos = tr.HitPos + tr.HitNormal * 10
-	
+
 	local ent = ents.Create( ClassName )
 	ent:SetPos( SpawnPos )
 	ent:Spawn()
 	ent:Activate()
-	
+
 	return ent
-	
+
 end
 
 
@@ -46,7 +46,7 @@ function ENT:Initialize()
 		-- self:PhysicsInitBox(Vector(-40, -40, -40), Vector(40, 40, 40))
 		self:SetMoveType( MOVETYPE_VPHYSICS )
 		self:SetSolid( SOLID_VPHYSICS )
-		
+
 		local phys = self:GetPhysicsObject()
 		if IsValid(phys) then
 			phys:Wake()
@@ -55,7 +55,7 @@ function ENT:Initialize()
 			-- phys:SetInertia(Vector(int,int,int))
 			-- phys:SetMass(50)
 		end
-		
+
 		self:SetHealth(1)
 
 		self:SetUseType( SIMPLE_USE )
@@ -69,13 +69,13 @@ function ENT:Initialize()
 		local phys = self:GetPhysicsObject()
 		if IsValid(phys) then
 		end
-	else 
+	else
 		self.MSize = 0
 	end
 
 	self.CreateTime = CurTime()
 	self.ExplodeTime = CurTime() + 3
-	
+
 end
 
 if ( CLIENT ) then
@@ -83,7 +83,7 @@ if ( CLIENT ) then
 	function ENT:Draw()
 		self.MSize = math.Approach(self.MSize, 1, FrameTime() * 10)
 
-		if !IsValid(self.Melon) then
+		if not IsValid(self.Melon) then
 			self.Melon = ClientsideModel("models/props_junk/watermelon01.mdl")
 			self.Melon:SetNoDraw(true)
 			self.Melon:SetAngles(AngleRand())
@@ -103,7 +103,7 @@ if ( CLIENT ) then
 			local pos = self:GetPos()
 
 			-- if self:GetKicking() then
-				if !self.MelonLastPos then self.MelonLastPos = self:GetPos() end
+				if not self.MelonLastPos then self.MelonLastPos = self:GetPos() end
 				self.MelonLastPos.x = math.Approach(self.MelonLastPos.x, self:GetPos().x, FrameTime() * 175)
 				self.MelonLastPos.y = math.Approach(self.MelonLastPos.y, self:GetPos().y, FrameTime() * 175)
 				self.MelonLastPos.z = math.Approach(self.MelonLastPos.z, self:GetPos().z, FrameTime() * 175)
@@ -112,7 +112,7 @@ if ( CLIENT ) then
 
 			self.Melon:SetPos(pos + Vector(0, 0, -18 + 10))
 			if self:GetPowerBomb() then
-				if !self.Melon.PowerBomb then
+				if not self.Melon.PowerBomb then
 					self.Melon.PowerBomb = true
 					self.Melon:SetMaterial("models/weapons/v_crowbar/crowbar_cyl")
 				end
@@ -120,7 +120,7 @@ if ( CLIENT ) then
 			self.Melon:DrawModel()
 
 			if self:GetPierce() then
-				if !IsValid(self.SawBlade) then
+				if not IsValid(self.SawBlade) then
 					self.SawBlade = ClientsideModel("models/props_junk/sawblade001a.mdl")
 					self.SawBlade:SetNoDraw(true)
 					self.SawBlade:SetAngles(Angle(0, math.Rand(0, 360), 0))
@@ -136,7 +136,7 @@ if ( CLIENT ) then
 			end
 
 			if self:GetRemoteDetonate() then
-				if !IsValid(self.Antenna) then
+				if not IsValid(self.Antenna) then
 					self.Antenna = ClientsideModel("models/props_rooftop/roof_dish001.mdl")
 					self.Antenna:SetNoDraw(true)
 					self.Antenna:SetAngles(Angle(0, math.Rand(0, 360), 0))
@@ -165,7 +165,7 @@ end
 
 function ENT:PhysicsCollide( data, physobj )
 
-	
+
 end
 
 function ENT:OnTakeDamage( dmginfo )
@@ -180,13 +180,13 @@ end
 function ENT:Think()
 	if SERVER then
 		for k, ply in pairs(player.GetAll()) do
-			if ply:Alive() && !self:GetNWBool("MelonCollide" .. ply:EntIndex()) then
+			if ply:Alive() and not self:GetNWBool("MelonCollide" .. ply:EntIndex()) then
 				local t = self:GetPos() - ply:GetPos()
-				// 18 is half block
-				// 35 is half player width
-				// 1 is hacky fix
+				-- 18 is half block
+				-- 35 is half player width
+				-- 1 is hacky fix
 				local d = 18 + 10 + 1
-				if math.abs(t.x) < d && math.abs(t.y) < d then
+				if math.abs(t.x) < d and math.abs(t.y) < d then
 
 				else
 					self:SetNWBool("MelonCollide" .. ply:EntIndex(), true)
@@ -194,20 +194,20 @@ function ENT:Think()
 			end
 		end
 
-		if self:GetRemoteDetonate() && !self.HasRemoteAlarmed && self.CreateTime + 1 < CurTime() then
+		if self:GetRemoteDetonate() and not self.HasRemoteAlarmed and self.CreateTime + 1 < CurTime() then
 			self.HasRemoteAlarmed = true
 			if IsValid(self:GetBombOwner()) then
 				self:GetBombOwner():EmitSound("npc/roller/remote_yes.wav", 40, 70)
 			end
 		end
 
-		if self.ExplodeTime < CurTime() && !self:GetRemoteDetonate() then
+		if self.ExplodeTime < CurTime() and not self:GetRemoteDetonate() then
 			self:Explode()
 			return true
 		end
 
 		if self:GetKicking() then
-			if self.KickingDelay && self.KickingDelay > CurTime() then
+			if self.KickingDelay and self.KickingDelay > CurTime() then
 
 			else
 				self.KickingDelay = CurTime() + 0.2
@@ -227,7 +227,7 @@ function ENT:Think()
 					else
 						self:SetKicking(false)
 						local ent = zone.grid:getSquare(sx, sy)
-						if IsValid(ent) && ent:GetClass() == "mb_melon" then
+						if IsValid(ent) and ent:GetClass() == "mb_melon" then
 							ent:KickMelon(self.KickingDir)
 							sound.Play("physics/flesh/flesh_squishy_impact_hard" .. math.random(1, 4) .. ".wav", self:GetPos(), 75, math.random( 90, 120 ))
 						end
@@ -260,10 +260,10 @@ end
 
 function ENT:StartTouch(ent)
 	local phys = self:GetPhysicsObject()
-	if ent:IsPlayer() && ent:HasUpgrade(8) then
+	if ent:IsPlayer() and ent:HasUpgrade(8) then
 		if IsValid(phys) then
-			if !self:GetKicking() then
-				// get the direction
+			if not self:GetKicking() then
+				-- get the direction
 				local ang = (self:GetPos() - ent:GetPos()):Angle()
 				ang.p = 0
 				ang.y = math.Round(ang.y / 90) * 90
@@ -295,15 +295,15 @@ function ENT:Explode(zone, combiner)
 	self:Remove()
 end
 
-// big chunks
-// models/props_junk/watermelon01_chunk01a.mdl
-// models/props_junk/watermelon01_chunk01b.mdl
-// models/props_junk/watermelon01_chunk01c.mdl
+-- big chunks
+-- models/props_junk/watermelon01_chunk01a.mdl
+-- models/props_junk/watermelon01_chunk01b.mdl
+-- models/props_junk/watermelon01_chunk01c.mdl
 
-// little chunks
-// models/props_junk/watermelon01_chunk02a.mdl
-// models/props_junk/watermelon01_chunk02b.mdl
-// models/props_junk/watermelon01_chunk02c.mdl
+-- little chunks
+-- models/props_junk/watermelon01_chunk02a.mdl
+-- models/props_junk/watermelon01_chunk02b.mdl
+-- models/props_junk/watermelon01_chunk02c.mdl
 
 function ENT:Use( ply, caller )
 end
@@ -316,11 +316,11 @@ function ENT:SetBombOwner(ply)
 	self:SetNWEntity("BombOwner", ply)
 end
 
-// work around so we don't have to use NWBool
+-- work around so we don't have to use NWBool
 function ENT:SetBombBool(power, bool)
 	-- self:SetNWBool("BombPierce", bool)
 	local value = self:GetNWInt("BombBools")
-	if bool then 
+	if bool then
 		value = bit.bor(value, power)
 	else
 		value = bit.band(value, bit.bnot(power))
@@ -329,7 +329,7 @@ function ENT:SetBombBool(power, bool)
 end
 
 function ENT:GetBombBool(power)
-	return bit.band(self:GetNWInt("BombBools"), power) != 0
+	do return bit.band(self:GetNWInt("BombBools"), power) end
 end
 
 

@@ -8,7 +8,7 @@ local function addHelpText(heading, size, text, color)
 	t.size = size or 1
 	t.category = cat
 	t.text = text
-	t.color = color 
+	t.color = color
 	table.insert(categories, t)
 end
 
@@ -39,7 +39,7 @@ end
 local menu
 local function openHelpScreen()
 	if IsValid(menu) then
-		menu:SetVisible(!menu:IsVisible())
+		menu:SetVisible(not menu:IsVisible())
 	else
 		menu = vgui.Create("DFrame")
 		GAMEMODE.ScoreboardPanel = menu
@@ -74,7 +74,7 @@ local function openHelpScreen()
 		function catlist:Paint(w, h)
 		end
 
-		// child positioning
+		-- child positioning
 		local canvas = catlist:GetCanvas()
 		canvas:DockPadding(0, 0, 0, 0)
 		function canvas:OnChildAdded( child )
@@ -94,7 +94,7 @@ local function openHelpScreen()
 			function but:Paint(w, h)
 				local col = Color(68, 68, 68, 160)
 				local colt = Color(190, 190, 190)
-				if !self.Selected then
+				if not self.Selected then
 					colMul(col, 0.7)
 					if self:IsDown() then
 						colMul(colt, 0.5)
@@ -127,7 +127,7 @@ local function openHelpScreen()
 			surface.DrawRect(1, 1, w - 2, h - 2)
 		end
 
-		// child positioning
+		-- child positioning
 		local canvas = textscroll:GetCanvas()
 		canvas:DockPadding(0, 0, 0, 0)
 		function canvas:OnChildAdded( child )

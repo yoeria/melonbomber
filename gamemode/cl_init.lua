@@ -21,7 +21,7 @@ include("cl_hudhelp.lua")
 
 GM.FirstPerson = CreateClientConVar( "mb_firstperson", 0, true, true )
 
-function GM:Initialize() 
+function GM:Initialize()
 end
 
 function GM:InitPostEntity()
@@ -40,7 +40,7 @@ end
 
 function GM:PostDrawViewModel( vm, ply, weapon )
 
-	if ( weapon.UseHands || !weapon:IsScripted() ) then
+	if ( weapon.UseHands or not weapon:IsScripted() ) then
 
 		local hands = LocalPlayer():GetHands()
 		if ( IsValid( hands ) ) then hands:DrawModel() end
@@ -57,9 +57,9 @@ function GM:PostDrawTranslucentRenderables()
 	local client = LocalPlayer()
 	if IsValid(client) then
 		local wep = client:GetActiveWeapon()
-		if IsValid(wep) && wep.PostDrawTranslucentRenderables then
+		if IsValid(wep) and wep.PostDrawTranslucentRenderables then
 			local errored, retval = pcall(wep.PostDrawTranslucentRenderables, wep)
-			if !errored then
+			if not errored then
 				print( retval )
 			end
 		end
@@ -75,14 +75,14 @@ end
 
 
 function GM:CalcView(ply, pos, angles, fov)
-	if self:IsCSpectating() && IsValid(self:GetCSpectatee()) then
+	if self:IsCSpectating() and IsValid(self:GetCSpectatee()) then
 		ply = self:GetCSpectatee()
 	end
-	if ply:IsPlayer() && !ply:Alive() then
+	if ply:IsPlayer() and not ply:Alive() then
 		ply = ply:GetRagdollEntity()
 	end
 	if IsValid(ply) then
-		if !self.FirstPerson:GetBool() || ply != LocalPlayer() then
+		if not self.FirstPerson:GetBool() or ply == not LocalPlayer() then
 			local trace = {}
 			trace.start = ply:GetPos() + Vector(0, 0, 100)
 			trace.endpos = trace.start + Vector(0, 0, 300)
@@ -100,7 +100,7 @@ function GM:CalcView(ply, pos, angles, fov)
 end
 
 function GM:ShouldDrawLocalPlayer()
-	if !self.FirstPerson:GetBool() then
+	if not self.FirstPerson:GetBool() then
 		return true
 	end
 	return false
@@ -132,8 +132,8 @@ function GM:GetZonePosFromEnt(ent)
 		mins = mins + ent:OBBMins()
 		maxs = maxs + ent:OBBMaxs()
 		local pos = ent:GetPos()
-		if pos.x > mins.x && pos.x < maxs.x then
-			if pos.y > mins.y && pos.y < maxs.y then
+		if pos.x > mins.x and pos.x < maxs.x then
+			if pos.y > mins.y and pos.y < maxs.y then
 				local center = (zone.mins + zone.maxs) / 2
 				local t = pos - center
 				return zone, math.Round(t.x / zone.sqsize), math.Round(t.y / zone.sqsize)
@@ -156,7 +156,7 @@ function GM:CreateMove( cmd )
 		cmd:RemoveKey(IN_DUCK)
 		cmd:SetUpMove(0)
 
-		if !self.FirstPerson:GetBool() then
+		if not self.FirstPerson:GetBool() then
 			cmd:ClearMovement()
 
 			local rel
@@ -196,7 +196,7 @@ function GM:CreateMove( cmd )
 			cmd:SetViewAngles(lastangles)
 
 		else
-		
+
 		end
 	end
 end
@@ -216,7 +216,7 @@ net.Receive("pk_elecplosion", function (len)
 end)
 
 function GM:StartChat()
-	if IsValid(self.EndRoundPanel) && self.EndRoundPanel:IsVisible() then
+	if IsValid(self.EndRoundPanel) and self.EndRoundPanel:IsVisible() then
 		timer.Simple(0, function () chat.Close() end)
 
 		self.EndRoundPanel:SetKeyboardInputEnabled(true)
@@ -233,6 +233,6 @@ function GM:ChatText(i, name, text, filter)
 	else
 		Msg( text, "\n" )
 	end
-	
+
 	return false
 end

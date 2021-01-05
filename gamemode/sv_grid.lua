@@ -2,7 +2,7 @@
 ClassGrid = class()
 local Grid = ClassGrid
 
-// TODO remove this junk from grid
+-- TODO remove this junk from grid
 function Grid:initialize(sqsize, sizeleft, sizeup, sizeright, sizedown)
 	self.squares = {}
 	if sizeleft then
@@ -38,7 +38,7 @@ function Grid:checkSquare(x, y)
 	if x > self.sizeRight then return true end
 	if y < -self.sizeUp then return true end
 	if y > self.sizeDown then return true end
-	return self:getSquare(x, y) != nil
+	return self:getSquare(x, y) == not nil
 end
 
 function Grid:countEmptySquares(x1, y1, x2, y2)
@@ -59,7 +59,7 @@ function Grid:generateWalkable()
 	for x = -self.sizeLeft, self.sizeRight do
 		for y = -self.sizeUp, self.sizeDown do
 			local sq = self:getSquare(x, y)
-			if !IsValid(sq) || sq.gridWalkable then
+			if not IsValid(sq) or sq.gridWalkable then
 				empty:setSquare(x, y, {x = x, y = y, sq = self:getSquare(x, y)})
 			end
 		end
@@ -75,7 +75,7 @@ function Grid:generateEmpty()
 	for x = -self.sizeLeft, self.sizeRight do
 		for y = -self.sizeUp, self.sizeDown do
 			local sq = self:getSquare(x, y)
-			if !IsValid(sq) then
+			if not IsValid(sq) then
 				empty:setSquare(x, y, {x = x, y = y, sq = self:getSquare(x, y)})
 			end
 		end

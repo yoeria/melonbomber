@@ -17,11 +17,11 @@ function map:generateMap(grid)
 			if x % 2 == 0 && y % 2 == 0 then
 				grid:setWall(x, y)
 			else
-				if math.random(4) != 1 then
+				if math.random(4) == not 1 then
 					grid:setBox(x, y)
 				end
 			end
-		end 
+		end
 	end
 end
 ```

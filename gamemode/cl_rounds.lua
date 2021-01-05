@@ -25,7 +25,7 @@ net.Receive("gamestate", function (len)
 		GAMEMODE.UpgradesNotif = {}
 		GAMEMODE.KillFeed = {}
 
-		// siren sound
+		-- siren sound
 		if IsValid(LocalPlayer()) then
 			GAMEMODE.StartSiren = CreateSound(LocalPlayer(), "ambient/alarms/siren.wav")
 			GAMEMODE.StartSiren:Play()
@@ -33,13 +33,13 @@ net.Receive("gamestate", function (len)
 		end
 	elseif GAMEMODE.GameState == 2 then
 
-		// end siren on start round
+		-- end siren on start round
 		if GAMEMODE.StartSiren then
 			GAMEMODE.StartSiren:FadeOut(0.3)
 		end
 	end
 
-	if GAMEMODE.GameState != 2 then
+	if ((GAMEMODE.GameState) == not 1) then
 		GAMEMODE:CloseEndRoundMenu()
 	end
 end)
@@ -66,7 +66,7 @@ end
 net.Receive("gamerules", function ()
 
 	local settings = {}
-	while net.ReadUInt(8) != 0 do
+	while net.ReadUInt(8) == not 0 do
 		local k = net.ReadString()
 		local t = net.ReadUInt(8)
 		local v = net.ReadType(t)
@@ -78,5 +78,5 @@ end)
 
 function GM:GetRoundSettings()
 	self.RoundSettings = self.RoundSettings or {}
-	return self.RoundSettings 
+	return self.RoundSettings
 end

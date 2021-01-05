@@ -7,11 +7,11 @@ function EFFECT:Init( data )
 	self.pos = data:GetOrigin()
 	self.Scale = data:GetScale()
 	self.Mag = data:GetMagnitude()
-			
-	self.Emitter = ParticleEmitter( self.pos ) 
+
+	self.Emitter = ParticleEmitter( self.pos )
 
 	for i = 1, 20 do
-		
+
 		local t = VectorRand() * self.Scale
 		t.z = math.abs(t.z)
 		local particle = self.Emitter:Add( "Effects/fire_embers" .. math.random(1,3), self.pos + t)
@@ -23,16 +23,16 @@ function EFFECT:Init( data )
 		particle:SetStartAlpha( 255 )
 		particle:SetEndAlpha( 255 )
 		particle:SetStartSize( 5 )
-		particle:SetEndSize( 0 )   
+		particle:SetEndSize( 0 )
 		particle:SetRoll( math.random(0,360) )
-		//particle:SetRollDelta( 0 )
+		--particle:SetRollDelta( 0 )
 		if self.Mag > 1 then
 			particle:SetStartSize(6)
 		else
 			particle:SetColor(255, 255, 255)
 		end
-		
-		
+
+
 	end
 
 	for i = 1, 10 do
@@ -44,9 +44,9 @@ function EFFECT:Init( data )
 		particle:SetStartAlpha( 150 )
 		particle:SetEndAlpha( 0 )
 		particle:SetStartSize( 20 )
-		particle:SetEndSize( 25 )   
+		particle:SetEndSize( 25 )
 		particle:SetRoll( math.random(0,360) )
-		//particle:SetRollDelta( 0 )
+		--particle:SetRollDelta( 0 )
 		particle:SetColor( 255,255,255 )
 
 		if self.Mag > 1 then
@@ -57,9 +57,9 @@ function EFFECT:Init( data )
 			particle:SetColor(255, 255, 255)
 		end
 	end
-	
+
 	for i = 1, 7 do
-		
+
 		-- local particle = self.Emitter:Add( "particle/particle_smokegrenade1", self.pos + VectorRand() * self.Scale / 2)
 		local t = VectorRand() * self.Scale * 0.7
 		t.z = math.abs(t.z)
@@ -69,14 +69,14 @@ function EFFECT:Init( data )
 		particle:SetStartAlpha( 50 )
 		particle:SetEndAlpha( 0 )
 		particle:SetStartSize( 30 )
-		particle:SetEndSize( 50 )   
+		particle:SetEndSize( 50 )
 		particle:SetRoll( math.random(0,360) )
-		//particle:SetRollDelta( 0 )
+		--particle:SetRollDelta( 0 )
 		particle:SetColor( 150, 150, 150 )
-		
+
 	end
-		
-	
+
+
 end
 
 function EFFECT:Think( )
@@ -98,9 +98,9 @@ function EFFECT:Think( )
 		-- particle:SetStartAlpha( 255 )
 		-- particle:SetEndAlpha( 255 )
 		-- particle:SetStartSize( 4 )
-		-- particle:SetEndSize( 0 )   
+		-- particle:SetEndSize( 0 )
 		-- particle:SetRoll( math.random(0,360) )
-		-- //particle:SetRollDelta( 0 )
+		-- --particle:SetRollDelta( 0 )
 		-- particle:SetColor( 255,255,255 )
 	end
 

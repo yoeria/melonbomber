@@ -54,16 +54,16 @@ function class(parent)
 	return t
 end
 
-function setClass(inst, class)
-	if inst && class then
+function SetClass(inst, class)
+	if inst and class then
 		setmetatable(inst, class)
-		if inst.setClass then
-			inst:setClass()
+		if inst.SetClass then
+			inst:SetClass()
 		end
 	end
 end
 
-function saveClass(inst, ...)
+function SaveClass(inst, ...)
 	if inst then
 		if inst.save then
 			local tab = {}
@@ -74,8 +74,8 @@ function saveClass(inst, ...)
 	end
 end
 
-function loadClass(class, saveTable, ...)
-	if class && saveTable then
+function LoadClass(class, saveTable, ...)
+	if class and saveTable then
 		return class:loadInstance(saveTable, ...)
 	end
 end

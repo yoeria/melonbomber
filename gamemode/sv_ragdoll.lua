@@ -32,14 +32,14 @@ dtypes[DMG_BUCKSHOT]="Bullet"
 local DeathRagdollsPerPlayer = 3
 local DeathRagdollsPerServer = 22
 
-if !PlayerMeta.CreateRagdollOld then
+if not PlayerMeta.CreateRagdollOld then
 	PlayerMeta.CreateRagdollOld = PlayerMeta.CreateRagdoll
 end
 function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 	local ent = self:GetNWEntity("DeathRagdoll")
 
-	// remove old player ragdolls
-	if !self.DeathRagdolls then self.DeathRagdolls = {} end
+	-- remove old player ragdolls
+	if not self.DeathRagdolls then self.DeathRagdolls = {} end
 	local countPlayerRagdolls = 1
 	for k,rag in pairs(self.DeathRagdolls) do
 		if IsValid(rag) then
@@ -48,7 +48,7 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 			self.DeathRagdolls[k] = nil
 		end
 	end
-	if DeathRagdollsPerPlayer >= 0 && countPlayerRagdolls > DeathRagdollsPerPlayer then
+	if DeathRagdollsPerPlayer >= 0 and countPlayerRagdolls > DeathRagdollsPerPlayer then
 		for i = 0,countPlayerRagdolls do
 			if countPlayerRagdolls > DeathRagdollsPerPlayer then
 				self.DeathRagdolls[1]:Remove()
@@ -60,7 +60,7 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 		end
 	end
 
-	// remove old server ragdolls
+	-- remove old server ragdolls
 	local c2 = 1
 	for k,rag in pairs(GAMEMODE.DeathRagdolls) do
 		if IsValid(rag) then
@@ -69,7 +69,7 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 			GAMEMODE.DeathRagdolls[k] = nil
 		end
 	end
-	if DeathRagdollsPerServer >= 0 && c2 > DeathRagdollsPerServer then
+	if DeathRagdollsPerServer >= 0 and c2 > DeathRagdollsPerServer then
 		for i = 0,c2 do
 			if c2 > DeathRagdollsPerServer then
 				GAMEMODE.DeathRagdolls[1]:Remove()
@@ -92,16 +92,16 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 		ent:SetPlayerColor(self:GetPlayerColor())
 	end
 	ent:SetNWEntity("RagdollOwner", self)
-	
+
 	ent.Corpse = {}
 	ent.Corpse.Name = self:Nick()
 	ent.Corpse.CauseDeath = ""
 	if dmginfo then
 		local t = dmginfo:GetDamageType()
-		// do bitmasks
+		-- do bitmasks
 	end
 	ent.Corpse.Attacker = ""
-	if IsValid(attacker) && attacker:IsPlayer() then
+	if IsValid(attacker) and attacker:IsPlayer() then
 		if attacker == self then
 			if ent.Corpse.CauseDeath == "" then
 				ent.Corpse.CauseDeath = "Suicide"
@@ -113,7 +113,7 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 		-- inflicter doesn't work, do on GM:PlayerDeath
 	end
 
-	// set velocities
+	-- set velocities
 	local Vel = self:GetVelocity()
 
 	local iNumPhysObjects = ent:GetPhysicsObjectCount()
@@ -131,13 +131,13 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 
 	end
 
-	// finish up
+	-- finish up
 	self:SetNWEntity("DeathRagdoll", ent )
 	table.insert(self.DeathRagdolls,ent)
 	table.insert(GAMEMODE.DeathRagdolls,ent)
 end
 
-if !PlayerMeta.GetRagdollEntityOld then
+if not PlayerMeta.GetRagdollEntityOld then
 	PlayerMeta.GetRagdollEntityOld = PlayerMeta.GetRagdollEntity
 end
 function PlayerMeta:GetRagdollEntity()
@@ -148,7 +148,7 @@ function PlayerMeta:GetRagdollEntity()
 	return self:GetRagdollEntityOld()
 end
 
-if !PlayerMeta.GetRagdollOwnerOld then
+if not PlayerMeta.GetRagdollOwnerOld then
 	PlayerMeta.GetRagdollOwnerOld = PlayerMeta.GetRagdollOwner
 end
 function EntityMeta:GetRagdollOwner()
@@ -159,10 +159,10 @@ function EntityMeta:GetRagdollOwner()
 	return self:GetRagdollOwnerOld()
 end
 
-function GM:RagdollSetDeathDetails(victim, inflictor, attacker) 
+function GM:RagdollSetDeathDetails(victim, inflictor, attacker)
 	local rag = victim:GetRagdollEntity()
 	if rag then
-		if IsValid(inflictor) && inflictor:IsWeapon() then
+		if IsValid(inflictor) and inflictor:IsWeapon() then
 			if inflictor.PrintName then
 				rag.Corpse.inflictor = inflictor.PrintName
 			else

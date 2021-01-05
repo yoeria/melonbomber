@@ -8,7 +8,7 @@ function GM:PlayerInitialSpawn(ply)
 
 	ply:SetTeam(2)
 
-	if self:GetGameState() != 0 then
+	if self:GetGameState() == not 0 then
 		timer.Simple(0, function ()
 			if IsValid(ply) then
 				ply:KillSilent()
@@ -33,7 +33,7 @@ function GM:PlayerLoadedLocalPlayer(ply)
 end
 
 net.Receive("clientIPE", function (len, ply)
-	if !ply.ClientIPE then
+	if not ply.ClientIPE then
 		ply.ClientIPE = true
 		hook.Call("PlayerLoadedLocalPlayer", GAMEMODE, ply)
 	end
@@ -111,7 +111,7 @@ function GM:PlayerSetupHands(ply)
 end
 
 function PlayerMeta:CalculateSpeed()
-	// set the defaults
+	-- set the defaults
 	local settings = {
 		walkSpeed = 160,
 		runSpeed = 300,
@@ -126,13 +126,13 @@ function PlayerMeta:CalculateSpeed()
 	hook.Call("PlayerCalculateSpeed", ply, settings)
 
 
-	// set out new speeds
+	-- set out new speeds
 	if settings.canRun then
 		self:SetRunSpeed(settings.runSpeed or 1)
 	else
 		self:SetRunSpeed(settings.walkSpeed or 1)
 	end
-	if self:GetMoveType() != MOVETYPE_NOCLIP then
+	if self:GetMoveType() == not MOVETYPE_NOCLIP then
 		if settings.canMove then
 			self:SetMoveType(MOVETYPE_WALK)
 		else
@@ -146,8 +146,8 @@ end
 
 function GM:DoPlayerDeath(ply, attacker, dmginfo)
 
-	ply:Freeze(false) // why?, *sigh*
-	
+	ply:Freeze(false) -- why?, *sigh*
+
 	ply:CreateRagdoll()
 
 	local ent = ply:GetNWEntity("DeathRagdoll")
@@ -159,7 +159,7 @@ function GM:DoPlayerDeath(ply, attacker, dmginfo)
 
 	ply:AddDeaths(1)
 
-	if attacker:IsValid() && attacker:IsPlayer() then
+	if attacker:IsValid() and attacker:IsPlayer() then
 		if attacker == ply then
 			attacker:AddFrags(-1)
 		else
@@ -257,44 +257,44 @@ function GM:PlayerSelectSpawn( ply )
 	else
 		self:PlayerSelectSpawnOld(ply)
 	end
-	
+
 end
 
 function GM:PlayerSelectSpawnOld( pl )
 
 	if ( GAMEMODE.TeamBased ) then
-	
+
 		local ent = GAMEMODE:PlayerSelectTeamSpawn( pl:Team(), pl )
 		if ( IsValid(ent) ) then return ent end
-	
+
 	end
 
 	-- Save information about all of the spawn points
 	-- in a team based game you'd split up the spawns
-	if ( !IsTableOfEntitiesValid( self.SpawnPoints ) ) then
-	
+	if ( not IsTableOfEntitiesValid( self.SpawnPoints ) ) then
+
 		self.LastSpawnPoint = 0
 		self.SpawnPoints = ents.FindByClass( "info_player_start" )
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_deathmatch" ) )
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_combine" ) )
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_rebel" ) )
-		
+
 		-- CS Maps
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_counterterrorist" ) )
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_terrorist" ) )
-		
+
 		-- DOD Maps
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_axis" ) )
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_allies" ) )
 
 		-- (Old) GMod Maps
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "gmod_player_start" ) )
-		
+
 		-- TF Maps
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_teamspawn" ) )
-		
+
 		-- INS Maps
-		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "ins_spawnpoint" ) )  
+		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "ins_spawnpoint" ) )
 
 		-- AOC Maps
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "aoc_spawnpoint" ) )
@@ -310,68 +310,68 @@ function GM:PlayerSelectSpawnOld( pl )
 		-- DIPRIP Maps
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "diprip_start_team_blue" ) )
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "diprip_start_team_red" ) )
- 
+
 		-- OB Maps
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_red" ) )
-		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_blue" ) )        
- 
+		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_blue" ) )
+
 		-- SYN Maps
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_coop" ) )
- 
+
 		-- ZPS Maps
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_human" ) )
-		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_zombie" ) )      
- 
+		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_zombie" ) )
+
 		-- ZM Maps
 		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_deathmatch" ) )
-		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_zombiemaster" ) )  		
+		self.SpawnPoints = table.Add( self.SpawnPoints, ents.FindByClass( "info_player_zombiemaster" ) )
 
 	end
-	
+
 	local Count = table.Count( self.SpawnPoints )
-	
+
 	if ( Count == 0 ) then
-		Msg("[PlayerSelectSpawn] Error! No spawn points!\n")
+		Msg("[PlayerSelectSpawn] Errornot  No spawn pointsnot \n")
 		return nil
 	end
-	
+
 	-- If any of the spawnpoints have a MASTER flag then only use that one.
 	-- This is needed for single player maps.
 	for k, v in pairs( self.SpawnPoints ) do
-		
+
 		if ( v:HasSpawnFlags( 1 ) ) then
 			return v
 		end
-		
+
 	end
-	
+
 	local ChosenSpawnPoint = nil
-	
+
 	-- Try to work out the best, random spawnpoint
 	for i=0, Count do
-	
+
 		ChosenSpawnPoint = table.Random( self.SpawnPoints )
 
-		if ( ChosenSpawnPoint &&
-			ChosenSpawnPoint:IsValid() &&
-			ChosenSpawnPoint:IsInWorld() &&
-			ChosenSpawnPoint != pl:GetVar( "LastSpawnpoint" ) &&
-			ChosenSpawnPoint != self.LastSpawnPoint ) then
-			
+		if ( ChosenSpawnPoint and
+			ChosenSpawnPoint:IsValid() and
+			ChosenSpawnPoint:IsInWorld() and
+			ChosenSpawnPoint == not pl:GetVar( "LastSpawnpoint" ) and
+			ChosenSpawnPoint == not self.LastSpawnPoint ) then
+
 			if ( hook.Call( "IsSpawnpointSuitable", GAMEMODE, pl, ChosenSpawnPoint, i == Count ) ) then
-			
+
 				self.LastSpawnPoint = ChosenSpawnPoint
 				pl:SetVar( "LastSpawnpoint", ChosenSpawnPoint )
 				return ChosenSpawnPoint
-			
+
 			end
-			
+
 		end
-			
+
 	end
-	
+
 	return ChosenSpawnPoint
-	
+
 end
 
 function GM:PlayerDeathThink(ply)
@@ -388,20 +388,20 @@ function GM:PlayerDeath(ply, inflictor, attacker )
 	ply.NextSpawnTime = CurTime() + 1
 	ply.DeathTime = CurTime()
 
-	// time until player can spectate another player
+	-- time until player can spectate another player
 	ply.SpectateTime = CurTime() + 2
 
-	if IsValid(attacker) && attacker:IsPlayer() && attacker != ply then
+	if IsValid(attacker) and attacker:IsPlayer() and attacker == not ply then
 		attacker:AddMoney(100)
 	end
 
 	-- Convert the inflictor to the weapon that they're holding if we can.
-	-- This can be right or wrong with NPCs since combine can be holding a 
+	-- This can be right or wrong with NPCs since combine can be holding a
 	-- pistol but kill you by hitting you with their arm.
-	if IsValid(inflictor) && inflictor == attacker && (inflictor:IsPlayer() || inflictor:IsNPC()) then
-	
+	if IsValid(inflictor) and inflictor == attacker and (inflictor:IsPlayer() or inflictor:IsNPC()) then
+
 		inflictor = inflictor:GetActiveWeapon()
-		if ( !IsValid( inflictor ) ) then inflictor = attacker end
+		if ( not IsValid( inflictor ) ) then inflictor = attacker end
 
 	end
 
@@ -437,12 +437,12 @@ function GM:CanPlayerSuicide(ply)
 end
 
 function GM:PlayerSay( ply, text, team)
-	if !IsValid(ply) then
+	if not IsValid(ply) then
 		return
 	end
 
 	local ct = ChatText()
-	if !ply:Alive() then
+	if not ply:Alive() then
 		ct:Add("[DEAD] ", Color(200, 20, 20))
 	end
 	local col = ply:GetPlayerColor()

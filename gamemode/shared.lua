@@ -1,8 +1,8 @@
 GM.Name 	= "Melonbomber"
 GM.Author 	= "MechanicalMind"
-// Credits to waddlesworth for the logo and icon
+-- Credits to waddlesworth for the logo and icon
 GM.Email 	= ""
-GM.Website 	= "http://codingconcoctions.com/melonbomber/"
+GM.Website 	= "http:--codingconcoctions.com/melonbomber/"
 GM.Version 	= "1.3.3"
 GM.GCCEntryID = 3
 
@@ -23,25 +23,25 @@ function GM:FinishMove(ply, mv)
 end
 
 function GM:ShouldCollide(ent1, ent2)
-	if !IsValid(ent1) then return true end
-	if !IsValid(ent2) then return true end
+	if not IsValid(ent1) then return true end
+	if not IsValid(ent2) then return true end
 
-	// nocollide melons you are standing on
-	if ent1:IsPlayer() && ent2:GetClass() == "mb_melon" then
+	-- nocollide melons you are standing on
+	if ent1:IsPlayer() and ent2:GetClass() == "mb_melon" then
 		if ent2:GetNWBool("MelonCollide" .. ent1:EntIndex()) then
 			return true
 		end
 		return false
 	end
-	if ent2:IsPlayer() && ent1:GetClass() == "mb_melon" then
+	if ent2:IsPlayer() and ent1:GetClass() == "mb_melon" then
 		if ent1:GetNWBool("MelonCollide" .. ent2:EntIndex()) then
 			return true
 		end
 		return false
 	end
 
-	// nocollide players
-	if ent1:IsPlayer() && ent2:IsPlayer() then
+	-- nocollide players
+	if ent1:IsPlayer() and ent2:IsPlayer() then
 		return false
 	end
 	return true

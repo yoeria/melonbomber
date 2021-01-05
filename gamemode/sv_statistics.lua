@@ -35,7 +35,7 @@ function GM:AddRoundStatistic(secondsPlayed, numPlayers)
 	end
 end
 
-function comma_value(n) -- credit http://richard.warburton.it
+function CommaValue(n) -- credit http:--richard.warburton.it
 	local left,num,right = string.match(tostring(n),'^([^%d]*%d)(%d*)(.-)$')
 	return left..(num:reverse():gsub('(%d%d%d)','%1,'):reverse())..right
 end
@@ -57,7 +57,7 @@ local function formatf(str, ...)
 			res = tostring(math.abs(value))
 		elseif tl == "f" then
 			value = tonumber(value or 0) or 0
-			if c == nil || c == "" then
+			if c == nil or c == "" then
 				res = tostring(math.abs(value))
 			else
 				local pow = 10 ^ (math.max(0, tonumber(c or 1) or 1))
@@ -84,9 +84,9 @@ local function formatf(str, ...)
 			res = tostring(value or "") or ""
 		end
 		local pre = ""
-		if tl == "d" || tl == "f" then
+		if tl == "d" or tl == "f" then
 			if flags[","] then
-				res = comma_value(res)
+				res = CommaValue(res)
 			end
 			if value >= 0 then
 				if flags[" "] then
@@ -125,7 +125,7 @@ local function printf(str, ...)
 end
 
 concommand.Add("mb_stats_round", function (ply, com, args)
-	if IsValid(ply) && !ply:IsListenServerHost() && !ply:SteamID() == "STEAM_0:0:16312259" then return end
+	if IsValid(ply) and not ply:IsListenServerHost() and not ply:SteamID() == "STEAM_0:0:16312259" then return end
 	local size = tonumber(args[2] or 100) or 100
 	local page = tonumber(args[1] or 0) or 0
 

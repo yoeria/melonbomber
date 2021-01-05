@@ -1,4 +1,4 @@
-if GAMEMODE && IsValid(GAMEMODE.EndRoundPanel) then
+if GAMEMODE and IsValid(GAMEMODE.EndRoundPanel) then
 	GAMEMODE.EndRoundPanel:Remove()
 end
 
@@ -24,10 +24,10 @@ local function addPlayerItem(self, mlist, ply)
 	avatar:SetPlayer(ply)
 	function avatar:DoClick() but:DoClick() end
 
-	
+
 	function but:Paint(w, h)
 
-		if menu.Results && ply == menu.Results.winner then
+		if menu.Results and ply == menu.Results.winner then
 			surface.SetDrawColor(70, 50, 10, 241)
 		else
 			surface.SetDrawColor(30, 30, 30, 241)
@@ -36,17 +36,17 @@ local function addPlayerItem(self, mlist, ply)
 
 		surface.SetTexture(grad)
 		surface.SetDrawColor(150, 150, 150, 10)
-		if menu.Results && ply == menu.Results.winner then
+		if menu.Results and ply == menu.Results.winner then
 			surface.SetDrawColor(255, 223, 0, 30)
 		else
 			surface.SetDrawColor(150, 150, 150, 10)
 		end
 		surface.DrawTexturedRectRotated(w / 2, h / 2, h, w, 90)
 
-		if IsValid(ply) && ply:IsPlayer() then
+		if IsValid(ply) and ply:IsPlayer() then
 			local col = ply:GetPlayerColor()
 			col = Color(col.x * 255, col.y * 255, col.z * 255)
-			
+
 			surface.SetDrawColor(col.r, col.g, col.b, 255)
 			surface.DrawRect(w - 32, 0, 32, h)
 
@@ -62,7 +62,7 @@ local function addPlayerItem(self, mlist, ply)
 				local x, y = self:LocalToScreen(0, 0)
 				render.SetScissorRect(x, y, x + s + 32 * (0.5 + v / 2), y + h, true)
 
-				// draw mute icon
+				-- draw mute icon
 				surface.SetMaterial(unmuted)
 				surface.SetDrawColor(255, 255, 255, 255)
 				-- surface.SetDrawColor(255, 255, 255, 255 * math.Clamp(v, 0.1, 1))
@@ -74,19 +74,19 @@ local function addPlayerItem(self, mlist, ply)
 
 			if ply:IsMuted() then
 
-				// draw mute icon
+				-- draw mute icon
 				surface.SetMaterial(muted)
 				surface.SetDrawColor(255, 255, 255, 255)
 				surface.DrawTexturedRect(s, h / 2 - 16, 32, 32)
 				s = s + 32 + 4
 			end
 
-			// render ping icon
+			-- render ping icon
 			surface.SetMaterial(ping)
 			surface.SetDrawColor(255, 255, 255, 255)
 			surface.DrawTexturedRect(w * 0.8, h / 2 - 8, 16, 16)
 
-			// draw ping
+			-- draw ping
 			draw.SimpleText(ply:Ping(), "RobotoHUD-L16", w * 0.8 + 4 + 16, h / 2, color_white, 0, 1)
 
 			surface.SetMaterial(score)
@@ -121,7 +121,7 @@ local function doPlayerItems(self, mlist)
 			end
 		end
 
-		if !found then
+		if not found then
 			addPlayerItem(self, mlist, ply)
 			add = true
 		end
@@ -129,27 +129,27 @@ local function doPlayerItems(self, mlist)
 	local del = false
 
 	for t,v in pairs(mlist:GetCanvas():GetChildren()) do
-		if !v.perm && v.ctime != CurTime() then
+		if not v.perm and v.ctime == not CurTime() then
 			v:Remove()
 			del = true
 		end
 	end
-	// make sure the rest of the elements are sorted and moved up to fill gaps
-	if del || add then
-		timer.Simple(0, function() 
+	-- make sure the rest of the elements are sorted and moved up to fill gaps
+	if del or add then
+		timer.Simple(0, function()
 			local childs = mlist:GetCanvas():GetChildren()
 			table.sort(childs, function (a, b)
-				if !IsValid(a) then return false end
-				if !IsValid(b) then return false end
-				if !IsValid(a.player) then return false end
-				if !IsValid(b.player) then return false end
+				if not IsValid(a) then return false end
+				if not IsValid(b) then return false end
+				if not IsValid(a.player) then return false end
+				if not IsValid(b.player) then return false end
 				return a.player:Team() * 1000 + a.player:EntIndex() < b.player:Team() * 1000 + b.player:EntIndex()
 			end)
-			
+
 			for k, v in pairs(childs) do
 				v:SetParent(mlist)
 			end
-			mlist:GetCanvas():InvalidateLayout() 
+			mlist:GetCanvas():InvalidateLayout()
 		end)
 	end
 end
@@ -199,7 +199,7 @@ function GM:CreateEndRoundMenu()
 
 		local Fraction = 0.4
 
-		surface.SetMaterial( matBlurScreen )	
+		surface.SetMaterial( matBlurScreen )
 		surface.SetDrawColor( 255, 255, 255, 255 )
 
 		for i=0.33, 1, 0.33 do
@@ -208,7 +208,7 @@ function GM:CreateEndRoundMenu()
 			if ( render ) then render.UpdateScreenEffectTexture() end
 			surface.DrawTexturedRect( x * -1, y * -1, ScrW(), ScrH() )
 		end
-		
+
 		surface.SetDrawColor(50, 50, 50, 135)
 		surface.DrawRect(-x, -y, ScrW(), ScrH())
 
@@ -223,7 +223,7 @@ function GM:CreateEndRoundMenu()
 	function leftpnl:Paint(w, h)
 	end
 
-	// player list section
+	-- player list section
 	local listpnl = vgui.Create("DPanel", leftpnl)
 	listpnl:Dock(FILL)
 	listpnl:DockPadding(10, 10, 10, 10)
@@ -245,7 +245,7 @@ function GM:CreateEndRoundMenu()
 	end
 
 	function plist:Think()
-		if !self.RefreshWait || self.RefreshWait < CurTime() then
+		if not self.RefreshWait or self.RefreshWait < CurTime() then
 			self.RefreshWait = CurTime() + 0.1
 			doPlayerItems(self, plist)
 
@@ -259,7 +259,7 @@ function GM:CreateEndRoundMenu()
 		child:DockMargin(0, 0, 0, 4)
 	end
 
-	// chat section
+	-- chat section
 	local pnl = vgui.Create("DPanel", leftpnl)
 	pnl:Dock(BOTTOM)
 	pnl:DockMargin(0, 20, 0, 0)
@@ -271,7 +271,7 @@ function GM:CreateEndRoundMenu()
 	function pnl:Paint(w, h)
 		surface.SetDrawColor(30, 30, 30, 252)
 		surface.DrawRect(0, 0, w, h)
-		
+
 		surface.SetTexture(grad)
 		surface.SetDrawColor(90, 90, 90, 20)
 		surface.DrawTexturedRectRotated(w / 2, h / 2, h, w, 90)
@@ -335,7 +335,7 @@ function GM:CreateEndRoundMenu()
 	menu.ChatList = mlist
 	mlist:Dock(FILL)
 	function mlist:Paint(w, h)
-		
+
 	end
 
 	local canvas = mlist:GetCanvas()
@@ -355,13 +355,13 @@ function GM:CreateEndRoundMenu()
 		self:SetEnabled( _canvassize_ > _barsize_ )
 
 		self:InvalidateLayout()
-		
-		if self:GetScroll() == oldSize || (oldSize == 1 && self:GetScroll() == 0) then
-			self:SetScroll(self.CanvasSize) 
+
+		if self:GetScroll() == oldSize or (oldSize == 1 and self:GetScroll() == 0) then
+			self:SetScroll(self.CanvasSize)
 		end
 	end
 
-	// results section
+	-- results section
 	local respnl = vgui.Create("DPanel", menu)
 	menu.ResultsPanel = respnl
 	respnl:Dock(FILL)
@@ -380,7 +380,7 @@ function GM:CreateEndRoundMenu()
 	function winner:Paint(w, h)
 		surface.SetDrawColor(30, 30, 30, 252)
 		surface.DrawRect(0, 0, w, h)
-		
+
 		surface.SetTexture(grad)
 		surface.SetDrawColor(90, 90, 90, 20)
 		surface.DrawTexturedRectRotated(w / 2, h / 2, h, w, 90)
@@ -388,7 +388,7 @@ function GM:CreateEndRoundMenu()
 	end
 
 
-	// map vote
+	-- map vote
 	local votepnl = vgui.Create("DPanel", respnl)
 	menu.VotePanel = votepnl
 	votepnl:Dock(FILL)
@@ -423,7 +423,7 @@ function GM:CreateEndRoundMenu()
 	function mlist:Paint(w, h)
 		-- surface.SetDrawColor(30, 30, 30, 252)
 		-- surface.DrawRect(0, 0, w, h)
-		
+
 		-- surface.SetTexture(grad)
 		-- surface.SetDrawColor(90, 90, 90, 20)
 		-- surface.DrawTexturedRectRotated(w / 2, h / 2, h, w, 90)
@@ -461,7 +461,7 @@ end
 net.Receive("map_type_list", function ()
 
 	local maps = {}
-	while net.ReadUInt(8) != 0 do
+	while net.ReadUInt(8) == not 0 do
 		local t = {}
 		t.key = net.ReadString()
 		t.name = net.ReadString()
@@ -504,7 +504,7 @@ net.Receive("map_type_list", function ()
 
 			draw.ShadowText(dname, "RobotoHUD-16", displaySize + 6, 4, color_white, 0)
 			local fg = draw.GetFontHeight("RobotoHUD-16")
-			if !wrap then
+			if not wrap then
 				wrap = WrapText("RobotoHUD-L15", math.floor((w - (displaySize + 6 + 4)) * 0.7), {gray, map.desc})
 			end
 			if wrap then
@@ -535,7 +535,7 @@ net.Receive("map_type_list", function ()
 
 			local i = 0
 			for ply, key in pairs(GAMEMODE.MapVotes) do
-				if IsValid(ply) && key == map.key then
+				if IsValid(ply) and key == map.key then
 					draw.ShadowText(ply:Nick(), "RobotoHUD-L15", w, i * fg2 - self.VotesScroll, gray, 2)
 					i = i + 1
 				end
@@ -581,13 +581,13 @@ net.Receive("mb_mapvotes", function (len)
 			GAMEMODE.SelfMapVote = map
 		end
 	end
-	
+
 	GAMEMODE.MapVotes = mapVotes
 	GAMEMODE.MapVotesByMap = byMap
 end)
 
 function GM:EndRoundAddChatText(...)
-	if !IsValid(menu) then
+	if not IsValid(menu) then
 		return
 	end
 
