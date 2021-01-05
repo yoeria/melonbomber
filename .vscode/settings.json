@@ -8,5 +8,6 @@
         "undefined-global",
         "undefined-field",
         "count-down-loop"
-    ]
+    ],
+    "terminal.integrated.shell.windows": "pwsh.exe"
 }
