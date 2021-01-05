@@ -1,0 +1,14 @@
+{
+    "title": "Melonbomber",
+    "description": "",
+    "type": "gamemode",
+    "maps": "^mb_",
+    "tags": [
+        "fun"
+    ],
+    "ignore": [
+        ".git/*",
+        ".vscode/*",
+        "README.md"
+    ]
+}
