@@ -1,6 +1,6 @@
 {
     "title": "Melonbonker",
-    "description": "",
+    "description": "Fork of melonbomber",
     "type": "gamemode",
     "maps": "^mb_",
     "tags": [
