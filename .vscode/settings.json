@@ -9,5 +9,5 @@
         "undefined-field",
         "count-down-loop"
     ],
-    "terminal.integrated.shell.windows": "pwsh.exe"
+    "terminal.integrated.shell.windows": "C:\\Program Files\\PowerShell\\7-preview\\pwsh.exe"
 }
