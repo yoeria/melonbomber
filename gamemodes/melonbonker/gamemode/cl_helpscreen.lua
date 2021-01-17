@@ -13,10 +13,10 @@ local function addHelpText(heading, size, text, color)
 end
 
 addHelpText("Intro", 1, [[
-Melonbomber is a game where you try to elimate the other players with explosive melons while grabbing upgrades to increase your power
+ is a game where you try to elimate the other players with explosive melons while grabbing upgrades to increase your power
 
 
-Based on the game Bomberman, Melonbomber brings the same hectic, fast paced gameplay to GMod. Players can place explosive melons and use them to kill other players or destroy wooden crates around the map. Inside the crates can be found powerups that can give you an edge on other players.
+Based on the game Bomberman,  brings the same hectic, fast paced gameplay to GMod. Players can place explosive melons and use them to kill other players or destroy wooden crates around the map. Inside the crates can be found powerups that can give you an edge on other players.
 
 ==CONTROLS==
 WASD to move around

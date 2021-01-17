@@ -101,7 +101,7 @@ local function loadMaps(rootFolder)
 			MsgC(Color(50, 255, 50), "Loaded map " .. name .. " from " .. rootFolder .. "\n")
 			tempG.map.key = name
 			MapTypes[name] = tempG.map
-			local path = "materials/melonbomber/maptypes/" .. name .. ".png"
+			local path = "materials/melonbonker/maptypes/" .. name .. ".png"
 			if file.Exists(path, "GAME") then
 				resource.AddSingleFile(path)
 			end
@@ -114,7 +114,7 @@ end
 
 function GM:LoadMaps()
 	loadMaps((GM or GAMEMODE).Folder:sub(11) .. "/gamemode/maptypes/")
-	loadMaps("melonbomber/maptypes/")
+	loadMaps("melonbonker/maptypes/")
 end
 
 GM:LoadMaps()

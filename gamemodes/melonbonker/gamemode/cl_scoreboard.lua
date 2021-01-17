@@ -13,7 +13,7 @@ surface.CreateFont( "ScoreboardPlayer" , {
 })
 
 local muted = Material("icon32/muted.png")
-local skull = Material("melonbomber/skull.png")
+local skull = Material("melonbonker/skull.png")
 
 local function addPlayerItem(self, mlist, ply)
 

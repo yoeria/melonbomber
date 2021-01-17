@@ -484,7 +484,7 @@ net.Receive("map_type_list", function ()
 		but:SetText("")
 		but:SetTall(displaySize)
 		local png
-		local path = "materials/melonbomber/maptypes/" .. map.key .. ".png"
+		local path = "materials/melonbonker/maptypes/" .. map.key .. ".png"
 		if file.Exists(path, "GAME") then
 			png = Material(path, "noclamp")
 		end

@@ -39,9 +39,9 @@ util.AddNetworkString("clientIPE")
 util.AddNetworkString("mb_openhelpmenu")
 
 resource.AddFile("resource/fonts/Roboto-Black.ttf")
-resource.AddFile("sound/melonbomber/bottle_pop_2.wav")
-resource.AddFile("materials/melonbomber/skull.png")
-resource.AddFile("materials/melonbomber/skull_license.txt")
+resource.AddFile("sound/melonbonker/bottle_pop_2.wav")
+resource.AddFile("materials/melonbonker/skull.png")
+resource.AddFile("materials/melonbonker/skull_license.txt")
 
 GM.MapScale = CreateConVar("mb_map_scale", 20, bit.bor(FCVAR_NOTIFY), "Size of map squared per player (default 20)" )
 GM.MapMaxArea = CreateConVar("mb_map_maxarea", 500, bit.bor(FCVAR_NOTIFY), "Max area of map squared" )
