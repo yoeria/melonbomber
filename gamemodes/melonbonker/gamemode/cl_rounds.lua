@@ -25,6 +25,7 @@ net.Receive("gamestate", function (len)
 		GAMEMODE.UpgradesNotif = {}
 		GAMEMODE.KillFeed = {}
 
+		-- check for sound_mute
 		-- siren sound
 		if IsValid(LocalPlayer()) then
 			GAMEMODE.StartSiren = CreateSound(LocalPlayer(), "ambient/alarms/siren.wav")

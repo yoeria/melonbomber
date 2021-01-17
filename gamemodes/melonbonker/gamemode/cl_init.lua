@@ -145,6 +145,7 @@ end
 local lastangles = Angle()
 function GM:CreateMove( cmd )
 
+	-- SPACEBAR for LMB && LCTRL for RMB
 	if LocalPlayer():Alive() then
 		if cmd:KeyDown(IN_JUMP) then
 			cmd:SetButtons(bit.bor(cmd:GetButtons(), IN_ATTACK))
